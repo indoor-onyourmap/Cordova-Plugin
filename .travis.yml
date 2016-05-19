@@ -1,4 +1,5 @@
-language: nodejs
+language: android
+os: osx
 android:
   components:
   - platform-tools
