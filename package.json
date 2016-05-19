@@ -1,0 +1,24 @@
+{
+    "version": "0.1",
+    "name": "com.oym.indoor",
+    "cordova_name": "GoIndoor",
+    "description": "GoIndoor Plugin",
+    "license": "Apache 2.0",
+    "repo": "",
+    "issue": "",
+    "keywords": [
+        "goindoor",
+        "indoor",
+        "location",
+        "positioning",
+        "beacon","beacons",
+        "iBeacon","iBeacons",
+        "BLE",
+        "oym", "OnYourMap"
+    ],
+    "platforms": [
+        "android","ios"
+    ],
+    "engines": [],
+    "englishdoc": ""
+}

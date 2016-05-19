@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="com.oym.indoor"
+    version="0.1">
+    <name>GoIndoor</name>
+    <description>GoIndoor Plugin</description>
+    <license>Apache 2.0</license>
+    <keywords>goindoor,indoor,location,positioning,beacon,beacons,iBeacon,iBeacons,BLE,oym,OnYourMap</keywords>
+    <repo></repo>
+    <issue></issue>
+
+    <js-module src="www/GoIndoor.js" name="GoIndoor">
+        <clobbers target="GoIndoor" />
+    </js-module>
+
+    <!-- android -->
+    <platform name="android">
+      <config-file target="res/xml/config.xml" parent="/*">
+        <feature name="GoIndoor" >
+          <param name="android-package" value="GoIndoorPlugin"/>
+          <param name="onload" value="true" />
+        </feature>
+      </config-file>
+      <config-file target="AndroidManifest.xml" parent="/manifest">
+        <uses-permission android:name="android.permission.INTERNET" />
+        <uses-permission android:name="android.permission.BLUETOOTH" />
+        <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+        <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+        <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+        <uses-feature android:name="android.hardware.bluetooth_le" android:required="true" />
+      </config-file>
+      <config-file target="AndroidManifest.xml" parent="/manifest/application">
+        <service android:exported="false" android:name="com.oym.indoor.LocationService" />
+      </config-file>
+      <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
+      <source-file src="src/android/GoIndoorPlugin.java" target-dir="src/" />
+    </platform>
+
+    <!-- iOS -->
+    <platform name="ios">
+      <config-file target="config.xml" parent="/*">
+        <feature name="GoIndoor">
+          <param name="ios-package" value="OYMGoIndoorPlugin" />
+        </feature>
+      </config-file>
+      <config-file target="*-Info.plist" parent="NSLocationAlwaysUsageDescription">
+        <string>Always Usage Description</string>
+      </config-file>
+      <framework src="src/ios/GoIndoor.framework" custom="true" />
+      <resource-file src="src/ios/Routing.bundle" />
+      <header-file src="src/ios/OYMGoIndoorPlugin.h" />
+      <source-file src="src/ios/OYMGoIndoorPlugin.m" />
+</platform>
+
+</plugin>
