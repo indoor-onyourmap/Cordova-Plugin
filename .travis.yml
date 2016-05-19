@@ -1,9 +1,10 @@
-language: nodejs
+language: node_js
 os:
 - osx
 - linux
 before_install:
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]
+- then
 - wget https://dl.google.com/android/android-sdk_r24.4.1-linux.tgz
 - tar xzf android-sdk_r24.4.1-linux.tgz
 - export ANDROID_HOME=$PWD/android-sdk-linux
