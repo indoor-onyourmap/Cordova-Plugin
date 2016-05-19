@@ -1,4 +1,5 @@
-language: android
+language: java
+jdk: oracle jdk7
 os:
 - osx
 - linux
@@ -20,12 +21,14 @@ before_install:
 - "npm install -g plugman"
 - "cordova create Test"
 - "cd Test"
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cordova platform add android --save; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cordova platform add ios --save; fi
-- "cordova platform add android --save"
 script:
 - "cordova plugin add ../"
 - "cordova clean"
 - "cordova build"
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cordova build android -- --gradleArg=-PcdvMinSdkVersion=18; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]];   then cordova build ios; fi
 notifications:
   email:
     recipients:
