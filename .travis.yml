@@ -1,0 +1,34 @@
+language: nodejs
+android:
+  components:
+  - platform-tools
+  - tools
+  - build-tools-23.0.2
+  - android-23
+  - extra-android-support
+  - extra-google-google_play_services
+  - extra-google-m2repository
+  - extra-android-m2repository
+  - addon-google_apis-google-23
+  - sys-img-armeabi-v7a-android-21
+osx_image: xcode7
+before_install:
+- "npm install -g cordova"
+- "npm install -g plugman"
+- "mkdir T"
+- "cd T"
+- "cordova create TT"
+- "cd TT"
+- "cordova platform add ios"
+- "cordova platform add android"
+- "cd .."
+- uname -a
+script:
+- "plugman install --platform ios --project TT/ --plugin ../"
+- "plugman install --platform android --project TT/ --plugin ../"
+- "cordova clean"
+- "cordova build"
+notifications:
+  email:
+    recipients:
+      secure: "l5FhA6wRIONgku6V12/WhDGUX4I/LuirjLLp/dbrmfmPLwtDVNDg8hnIMjHZ/e33goU0ffwYik/Bv0qzSNSMglBIesOUoDPpke6bUALC4tUOC0KpDaTRGQiGPt7McKHqvwPvNHk4DnYKeq1PhoK59qa6rPki59wa4lvjXjUpTnThMtxNHa+cIVhLwdf3wctLAGBI/aeHTFNWM0reT7saj3ydjZYczITaU7fAywkmoawmZyqng8cbAIk76gx80YgtGoYtxaoXqPtGFvZXyWaLgTUMbXJwX4E/aEf8KstpZx0M2TO0kpTQtrjEYcTYfqNp1J5T8yyfh1sUEBCrblYbwDF2uM7ae7Vkg0hFziPXtLYctDOjx9crMaQbQmh6OganGjnfN9odMKk79RwC1+lQ4yxIHSiDfcHenoAbh9dpGhy9wm2Wh6UFNAktkKFOWym2kJ9JDWpnW0UdoX2Mttl0IVxiF0wUWsRmYcs13L4GuxOWlWBz1YkGEWx7QPyBA0ibasu64J2VJFJZSv+v6QSkJQ3zj/TDn53lJ/awx9ckjQlu6NM715pfz8cZk1ZcEnxhIU/mV/vNLtNtD1efs6nrjcvX+7bc/8grYFwWbKqt3h8ecYdr3H2elAJav+OuhhOUpII7dpeFgoY4axauLh7irT2QLv5rK+h8yzZhGv0w7ZY="
