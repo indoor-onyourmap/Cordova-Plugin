@@ -8,8 +8,8 @@ before_install:
 - "cd T"
 - "cordova create TT"
 - "cd TT"
-- "cordova platform add ios"
-- "cordova platform add android"
+- "cordova platform add ios --save"
+- "cordova platform add android --save"
 - "cd .."
 - uname -a
 script:
