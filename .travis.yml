@@ -14,7 +14,7 @@ before_install:
 script:
 - "cordova plugin add ../"
 - "cordova clean"
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export ORG_GRADLE_PROJECT_cdvMinSdkVersion=18; printf "ext.postBuildExtras = {\n\tandroid {\n\t\tcompileOptions {\n\t\t\tsourceCompatibility JavaVersion.VERSION_1_7\n\t\t\ttargetCompatibility JavaVersion.VERSION_1_7\n\t\t}\n\t}\n}\n" > Test/platforms/android/build-extras.gradle; cordova build android --stacktrace --debug; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export ORG_GRADLE_PROJECT_cdvMinSdkVersion=18; printf "ext.postBuildExtras = {\n\tandroid {\n\t\tcompileOptions {\n\t\t\tsourceCompatibility JavaVersion.VERSION_1_7\n\t\t\ttargetCompatibility JavaVersion.VERSION_1_7\n\t\t}\n\t}\n}\n" > platforms/android/build-extras.gradle; cordova build android --stacktrace --debug; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]];   then cordova build ios; fi
 notifications:
   email:
