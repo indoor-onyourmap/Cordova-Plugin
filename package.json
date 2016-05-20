@@ -1,0 +1,38 @@
+{
+  "name": "cordova-plugin",
+  "version": "0.1.0",
+  "description": "GoIndoor Plugin",
+  "cordova": {
+    "id": "cordova-goindoor",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/indoor-onyourmap/Cordova-Plugin.git"
+  },
+  "keywords": [
+    "goindoor",
+    "indoor",
+    "location",
+    "positioning",
+    "beacon",
+    "beacons",
+    "iBeacon",
+    "iBeacons",
+    "BLE",
+    "oym",
+    "OnYourMap",
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios"
+  ],
+  "author": "Joan Comellas",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/indoor-onyourmap/Cordova-Plugin/issues"
+  },
+  "homepage": "https://github.com/indoor-onyourmap/Cordova-Plugin#readme"
+}
