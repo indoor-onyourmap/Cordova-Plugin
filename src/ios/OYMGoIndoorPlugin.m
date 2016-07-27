@@ -158,11 +158,20 @@
 
     NSMutableArray* objs = [NSMutableArray new];
     for (OYMPlace* p in places) {
-        [objs addObject: [p toJson]];
+        [objs addObject: [p toDictionary]];
     }
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:objs];
     [pluginResult setKeepCallbackAsBool:YES];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)computeRoute:(CDVInvokedUrlCommand *)command {
+    OYMRoutePoint* start = [[OYMRoutePoint alloc] initWithJson:JsonObjectToJsonString([command.arguments objectAtIndex:0])];
+    OYMRoutePoint* destination = [[OYMRoutePoint alloc] initWithJson:JsonObjectToJsonString([command.arguments objectAtIndex:1])];
+    OYMRoute* route = [go computeRouteFrom:start to:destination];
+
+    CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:route.toDictionary];
+    [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
 }
 
 

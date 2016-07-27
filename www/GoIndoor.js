@@ -154,7 +154,7 @@ GoIndoor.prototype.setConfigurationInnerCallback = function (flag, callback) {
 *
 * @callback GoIndoor~startLocateCallback
 * @param {!object} response - Response object
-* @param {!boolean} response.flag - Flag to know whether the location service starts successfully
+* @param {!boolean} response.succeed - Flag to know whether the location service starts successfully
 * @param {?string} response.message - Message with further information of the error. May not be defined.
 */
 
@@ -196,10 +196,10 @@ GoIndoor.prototype.stopLocate = function () {
 /**
 *  This callback will handle the get Places process.
 *
-* @callback GoIndoor~setPlacesCallback
+* @callback GoIndoor~getPlacesCallback
 * @param {!object} response - Response object
-* @param {boolean} response.flag - Flag to know whether the request succeed
-* @param {Place[]} response.data - Place list
+* @param {!boolean} response.succeed - Flag to know whether the request succeed
+* @param {?Place[]} response.data - Place list
 */
 
 /**
@@ -229,7 +229,7 @@ GoIndoor.prototype.stopLocate = function () {
 /**
 *  Getter for the place list.
 *
-* @param {!GoIndoor~setPlacesCallback} callback - Callback to handle the process
+* @param {!GoIndoor~getPlacesCallback} callback - Callback to handle the process
 * @param {GetPlacesOptions=} opts - Advanced configuration options
 */
 GoIndoor.prototype.getPlaces = function (callback, opts) {
@@ -243,19 +243,64 @@ GoIndoor.prototype.getPlacesInnerCallback = function (flag, callback) {
   return function(resp) {
     var response = {};
     response.succeed = flag;
-    if (flag && Object.prototype.toString.call(resp) === '[object Array]') {
-      response.data = [];
-      if (resp.length > 0) {
-        var conversion = (typeof resp[0] === 'string');
-        for (var i = 0; i < resp.length; i++) {
-          response.data[i] = conversion? JSON.parse(resp[i]): resp[i];
-          if (conversion) {
-            response.data[i].geometry = JSON.parse(response.data[i].geometry);
-          }
-        }
-      }
-    } else {
+    response.data = [];
+    if (flag) {
       response.data = resp;
+    }
+    callback(response);
+  }
+};
+
+
+/**
+* @typedef {object} RoutePoint
+* @property {number} latitude - WGS84 Latitude
+* @property {number} longitude - WGS84 Longitude
+* @property {number} floorNumber - Floor number
+* @property {string} building - Building ID
+*/
+/**
+*  This callback will handle the compute route process.
+*
+* @callback GoIndoor~computeRouteCallback
+* @param {!object} response - Response object
+* @param {!boolean} response.succeed - Flag to know whether the request succeed
+* @param {?Route} response.data - Place list
+*/
+/**
+* @typedef {object} Route
+* @property {RoutePoint[]} route - List of points containing the route
+* @property {Instruction[]} instructions - List of instructions to follow
+* @property {number} distance - Route distance in meters
+* @property {number} time - Route time in seconds
+* @property {boolean} arePropsFulfilled - Flag telling whether the properties are fulfilled to compute the route
+*/
+/**
+* @typedef {object} Instruction
+* @property {number} distance - Distance from the start point
+* @property {InstructionType} instruction - Instruction to apply at that distance
+* @property {Object.<string,string>} props - Values retrieved for the instruction
+*/
+/**
+*  Computes a route between two given points.
+*
+* @param {!RoutePoint} start - Departure point
+* @param {!RoutePoint} destination - Destination point
+* @param {!GoIndoor~computeRouteCallback} callback - Callback to handle the process
+*/
+GoIndoor.prototype.computeRoute = function (start, destination, callback) {
+  exec(this.computeRouteInnerCallback(true, callback), this.computeRouteInnerCallback(false, callback), "GoIndoor", "computeRoute", [start, destination]);
+};
+
+/**
+* @private
+*/
+GoIndoor.prototype.computeRouteInnerCallback = function (flag, callback) {
+  return function(resp) {
+    var response = {};
+    response.succeed = flag;
+    if (flag) {
+      response.data = JSON.parse(resp);
     }
     callback(response);
   }

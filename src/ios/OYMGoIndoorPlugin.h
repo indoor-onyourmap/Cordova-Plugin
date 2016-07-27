@@ -19,5 +19,6 @@
 - (void)startLocate:(CDVInvokedUrlCommand*)command;
 - (void)stopLocate:(CDVInvokedUrlCommand*)command;
 - (void)getPlaces:(CDVInvokedUrlCommand*)command;
+- (void)computeRoute:(CDVInvokedUrlCommand *)command;
 
 @end
