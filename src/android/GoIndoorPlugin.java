@@ -7,6 +7,8 @@ import com.oym.indoor.LocationBroadcast;
 import com.oym.indoor.LocationResult;
 import com.oym.indoor.NotificationResult;
 import com.oym.indoor.Place;
+import com.oym.indoor.Route;
+import com.oym.indoor.RoutePoint;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
@@ -26,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 
 public class GoIndoorPlugin extends CordovaPlugin {
 
-  public static final String TAG = "Cool Plugin";
+  public static final String TAG = "GoIndoorPlugin";
 
   public GoIndoor go;
   private boolean connected = false;
@@ -57,6 +59,7 @@ public class GoIndoorPlugin extends CordovaPlugin {
 
   public boolean execute(final String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
 
+    PluginResult result = null;
     switch(action) {
       case "setConfiguration":
         callbackConnect = callbackContext;
@@ -79,7 +82,7 @@ public class GoIndoorPlugin extends CordovaPlugin {
 
           go = builder.build();
         } catch (Exception exc) {
-          PluginResult result = new PluginResult(PluginResult.Status.ERROR);
+          result = new PluginResult(PluginResult.Status.ERROR);
           callbackConnect.sendPluginResult(result);
         }
         return true;
@@ -113,7 +116,6 @@ public class GoIndoorPlugin extends CordovaPlugin {
         }
         return true;
       case "getPlaces":
-        PluginResult result = null;
         try {
           ArrayList<Place> places = new ArrayList<>();
           JSONObject opts = args.optJSONObject(0);
@@ -149,9 +151,31 @@ public class GoIndoorPlugin extends CordovaPlugin {
             } else if (opts.has("latitude") && opts.has("longitude") && opts.has("radius") && opts.has("floorNumber") && opts.has("building")) {
               places = go.getPlaces(opts.getDouble("latitude"), opts.getDouble("longitude"), opts.getInt("radius"), opts.getInt("floorNumber"), opts.getString("building"), tags, filter);
             }
+          } else {
+            places = go.getPlaces();
           }
 
           result = new PluginResult(PluginResult.Status.OK, new JSONArray(mapper.writeValueAsString(places)));
+        } catch (Exception e) {
+          Log.e("JC", "Exception", e);
+          result = new PluginResult(PluginResult.Status.ERROR);
+        } finally {
+          callbackContext.sendPluginResult(result);
+        }
+        return true;
+      case "computeRoute":
+        try {
+          JSONObject startObj = args.optJSONObject(0);
+          JSONObject destinationObj = args.optJSONObject(1);
+          if (startObj != null && destinationObj != null) {
+            RoutePoint start = mapper.readValue(startObj.toString(), RoutePoint.class);
+            RoutePoint destination = mapper.readValue(destinationObj.toString(), RoutePoint.class);
+            Route route = go.computeRoute(start, destination);
+            result = new PluginResult(PluginResult.Status.OK, new JSONObject(route.toJson()));
+          } else {
+            throw new Exception("Start and destination should not be null");
+          }
+
         } catch (Exception e) {
           Log.e("JC", "Exception", e);
           result = new PluginResult(PluginResult.Status.ERROR);

@@ -3,7 +3,7 @@ repositories{
 }
 
 dependencies {
-   compile 'com.oym.indoor:goindoor:2.2.0'
+   compile 'com.oym.indoor:goindoor:2.2.1'
 }
 
 android {
