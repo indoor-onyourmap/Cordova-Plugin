@@ -17,13 +17,13 @@ before_install:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cordova platform add android --save; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cordova platform add ios --save; fi
 install:
-- curl -sSL -o /var/tmp/jdk_switcher.sh 'https://raw.githubusercontent.com/michaelklishin/jdk_switcher/master/jdk_switcher.sh'
+- curl -sSL -o /var/tmp/jdk_switcher.sh 'https://gist.githubusercontent.com/indoor-onyourmap/b20de65468b7db1f4cdd9b6b73452184/raw/312a39c1dc2345425af4ef9865a89bad181d0989/jdk_switcher.sh'
 script:
 - source /var/tmp/jdk_switcher.sh
 - jdk_switcher use oraclejdk8
 - "cordova plugin add ../"
 - "cordova clean"
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export ORG_GRADLE_PROJECT_cdvMinSdkVersion=18; printf "ext.postBuildExtras = {\r\n\tandroid {\r\n\t\tdefaultConfig {\r\n\t\t\tjackOptions {\r\n\t\t\t\tenabled true\r\n\t\t\t}\r\n\t\t}\r\n\t\tcompileOptions {\r\n\t\t\tsourceCompatibility JavaVersion.VERSION_1_8\r\n\t\t\ttargetCompatibility JavaVersion.VERSION_1_8\r\n\t\t}\r\n\t}\r\n}\r\n" > platforms/android/build-extras.gradle; cordova build android --stacktrace --debug; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export ORG_GRADLE_PROJECT_cdvMinSdkVersion=18; printf "ext.postBuildExtras = {\n\tandroid {\n\t\tcompileOptions {\n\t\t\tsourceCompatibility JavaVersion.VERSION_1_7\n\t\t\ttargetCompatibility JavaVersion.VERSION_1_7\n\t\t}\n\t}\n}\n" > Test/platforms/android/build-extras.gradle; cordova build android --stacktrace --debug; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]];   then cordova build ios; fi
 notifications:
   email:
