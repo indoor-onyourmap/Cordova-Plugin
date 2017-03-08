@@ -20,7 +20,7 @@ install:
 - curl -sSL -o /var/tmp/jdk_switcher.sh 'https://gist.githubusercontent.com/indoor-onyourmap/b20de65468b7db1f4cdd9b6b73452184/raw/312a39c1dc2345425af4ef9865a89bad181d0989/jdk_switcher.sh'
 script:
 - source /var/tmp/jdk_switcher.sh
-- jdk_switcher use oraclejdk8
+- jdk_switcher use oraclejdk7
 - java -version
 - echo $PATH
 - "cordova plugin add ../"
